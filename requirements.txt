@@ -1,0 +1,41 @@
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+python-multipart==0.0.20
+scikit-learn==1.7.1
+networkx==3.5
+matplotlib==3.11.2
+shap==0.52.0
+pytest==8.4.2
+
+# Bulk ingestion & normalisation (backend/services/parsers.py, analytics_sql.py)
+polars==1.44.2
+duckdb==1.5.5
+pydantic==2.13.5
+openpyxl==3.1.5
+
+# Supervised/weak-supervised detection refinement (backend/services/models.py)
+catboost==1.2.10
+
+# Local experiment tracking, offline (backend/services/tracking.py)
+mlflow==3.16.1
+
+# Optional: driver only. Neo4j itself runs as a separate local/Docker service
+# (see docker-compose.yml's `neo4j` profile); without it, backend/services/
+# neo4j_sync.py is a documented no-op and the in-memory NetworkX graph is
+# used for everything (detection, clustering, the dashboard).
+neo4j==6.3.1
+
+# Optional, offline-only: PyTorch + PyTorch Geometric power the GraphSAGE
+# encoder in backend/services/graph_learning.py. Without them, that module
+# automatically falls back to a dependency-free spectral (GCN-style
+# propagation + truncated SVD) embedding -- DBSCAN wallet clustering still
+# runs either way, just with the fallback `method` reported in the API.
+# CPU-only wheels (no CUDA) keep the offline footprint small:
+# torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+# torch_geometric==2.6.1
+
+# Optional, offline-only: enables backend/services/geoip.py to resolve IPs
+# that arrive without pre-set geo_country/asn fields, using a local MaxMind
+# GeoLite2 .mmdb file (free account required to download the .mmdb itself;
+# no network calls happen at runtime). Uncomment if you have the file.
+# geoip2==4.8.0
